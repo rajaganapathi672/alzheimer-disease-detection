@@ -137,7 +137,7 @@ model may be predictive of the transition.
 
 </center>
   
-Table 2: Classifcation performance in ADNI held-out with different neural network architectures. Please refer [paper](http://proceedings.mlr.press/v116/liu20a) for more details.
+Table 2: Classifcation performance in ADNI held-out with different neural network architectures. Please refer [paper](http://proceedings.mlr.press/v116/liu20a) for more details
   
   
 ## References
