@@ -47,4 +47,4 @@ def build_model(config, input_dim = 3):
         model_dict.update(pretrained_dict) 
         print(model_dict.keys())
         main_model.load_state_dict(model_dict)
-    return main_model
+    return model
