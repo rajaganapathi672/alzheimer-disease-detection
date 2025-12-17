@@ -315,4 +315,3 @@ def save_checkpoint(state, is_best, lowest_loss, is_best_micro_auc, is_best_macr
 
 if __name__ == '__main__':
     main()
-  print(main())
