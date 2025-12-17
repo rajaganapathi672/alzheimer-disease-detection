@@ -135,8 +135,9 @@ class NetWork(nn.Module):
             z = self.age_encoder(z,age_id)
         return z
 
-
+print(aks)
 def weights_init(model):
     if type(model) in [nn.Conv3d,nn.Linear]:
         nn.init.xavier_normal_(model.weight.data)
+
         nn.init.constant_(model.bias.data, 0.1)
