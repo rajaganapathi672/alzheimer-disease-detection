@@ -93,7 +93,7 @@ class Deconv2D(nn.Module):
             nn.LeakyReLU(),
             nn.ConvTranspose2d(16, 8, 7, stride=2),  # b, 1, 115, 115
             nn.LeakyReLU(),
-            nn.ConvTranspose2d(8, 1, 7, stride=1),  
+            nn.ConvTranspose2d(8, 1, 7, stride=1),  #b,2,115,155
             nn.Sigmoid()
         )
 
