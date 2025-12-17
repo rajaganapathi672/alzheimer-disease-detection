@@ -96,7 +96,7 @@ class Deconv2D(nn.Module):
             nn.ConvTranspose2d(8, 1, 7, stride=1),  #b,2,115,155
             nn.Sigmoid()
         )
-
+print(aks)
     def forward(self, x):
         x = self.linear(x)
         x = x.view(-1,1,12,12)
