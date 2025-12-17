@@ -54,7 +54,7 @@ class GradReverse(Function):
         return x.view_as(x)
 
     def backward(self, grad_output):
-        return (grad_output * self.lambd)
+        return (grad_output + self.lambd)
 
 class adversarial_linear_model(nn.Module):
     def __init__(self, image_embedding_model, classifier,
