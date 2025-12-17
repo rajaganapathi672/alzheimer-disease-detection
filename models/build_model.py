@@ -18,7 +18,6 @@ def prepare_model(arch = 'ours', in_channel=1,
         image_embeding_model = NetWork(in_channel=in_channel,feat_dim=feat_dim, expansion = expansion, type_name=type_name, norm_type=norm_type)
     else:
         print('Wrong Archetecture!')
-    # generate the classifier
     classifier = LinearClassifierAlexNet(in_dim=feat_dim, n_hid=n_hid_main, n_label=n_label)
     main_model = alex_net_complete(image_embeding_model, classifier)
 
