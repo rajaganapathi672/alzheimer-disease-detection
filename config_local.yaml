@@ -1,0 +1,43 @@
+file_name: ./saved_model/test_run
+data:
+  data_root_dir: data/
+  dir_to_scans: ./Data
+  dir_to_tsv: ./datasets/files
+  batch_size: 2
+  val_batch_size: 2
+  workers: 0
+  percentage_usage: 1.0
+exp_name: test_run
+visdom:
+  port: 8097
+  server: null
+model:
+  arch: ours
+  input_channel: 1
+  nhid: 512
+  feature_dim: 1024
+  n_label: 3
+  expansion: 8
+  num_blocks: 0
+  type_name: conv3x3x3
+  norm_type: Instance
+adv_model:
+  nhid: 36
+  out_dim: 12
+mmse_model:
+  nhid: 64
+training_parameters:
+  use_age: False
+  pretrain:
+  max_iter: 10
+  start_epoch: 0
+  epochs: 1
+  print_freq: 1
+  max_grad_l2_norm:
+  report_interval: 10
+  snapshot_interval: 10
+optimizer:
+  method: SGD
+  par:
+    lr: 0.01
+    weight_decay: 0.000
