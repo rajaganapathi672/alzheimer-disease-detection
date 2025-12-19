@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroScan AI | Alzheimer's Detection</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette: Modern, clean, trustworthy */
+            --primary: #2563eb;
+            /* Royal Blue */
+            --primary-light: #eff6ff;
+            /* Very Light Blue */
+            --secondary: #475569;
+            /* Slate Gray */
+            --accent: #0ea5e9;
+            /* Sky Blue */
+            --success: #10b981;
+            /* Emerald */
+            --warning: #f59e0b;
+            /* Amber */
+            --danger: #ef4444;
+            /* Red */
+            --bg: #f8fafc;
+            /* Slate-50 */
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            /* Slate-900 */
+            --text-muted: #64748b;
+            /* Slate-500 */
+
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* --- Main Layout --- */
+        .wrapper {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            /* Info Panel | Interaction Panel */
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Left Column: Info --- */
+        .info-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .info-section p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .stages-card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-sm);
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stage-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid transparent;
+        }
+
+        .stage-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stage-item.cn {
+            border-color: var(--success);
+        }
+
+        .stage-item.mci {
+            border-color: var(--warning);
+        }
+
+        .stage-item.ad {
+            border-color: var(--danger);
+        }
+
+        .stage-title {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .stage-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Right Column: Interaction --- */
+        .interaction-card {
+            background-color: var(--card-bg);
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            padding: 2.5rem;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            background-color: #f8fafc;
+        }
+
+        .upload-area:hover,
+        .upload-area.highlight {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .icon-large {
+            font-size: 3.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 8px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        /* --- Result Display --- */
+        .result-container {
+            margin-top: 2rem;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0%, #e2e8f0 0%);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+        }
+
+        .score-value {
+            position: relative;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* Dynamic classes based on result */
+        .res-cn .result-badge {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .res-cn .score-circle {
+            background: conic-gradient(var(--success) var(--percent), #e2e8f0 0);
+        }
+
+        .res-mci .result-badge {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .res-mci .score-circle {
+            background: conic-gradient(var(--warning) var(--percent), #e2e8f0 0);
+        }
+
+        .res-ad .result-badge {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .res-ad .score-circle {
+            background: conic-gradient(var(--danger) var(--percent), #e2e8f0 0);
+        }
+
+        .file-meta {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            background-color: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: inline-block;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 4rem;
+        }
+
+        /* Loader */
+        .loader-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 1.5rem;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 2.5rem;
+            border: 1px solid #e2e8f0;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--text-main);
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="brand">
+                <span style="font-size: 1.8rem;">🧠</span> NeuroScan AI
+            </div>
+            <div>
+                <a href="#" id="aboutBtn"
+                    style="text-decoration: none; color: var(--text-muted); font-weight: 500;">About Project</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrapper">
+
+        <!-- Left Column: Information -->
+        <div class="info-section">
+            <h2>AI-Powered Early Detection</h2>
+            <p>Our deep learning model analyzes structural MRI scans to detect biomarkers associated with Alzheimer's
+                Disease, assisting in early diagnosis and progression forecasting.</p>
+
+            <div class="stages-card">
+                <h3 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--text-main);">Understanding the Classes
+                </h3>
+
+                <div class="stage-item cn">
+                    <span class="stage-title" style="color: var(--success);">CN - Cognitively Normal</span>
+                    <span class="stage-desc">Individuals with normal cognitive function and no signs of dementia visible
+                        in the scan structure.</span>
+                </div>
+
+                <div class="stage-item mci">
+                    <span class="stage-title" style="color: var(--warning);">MCI - Mild Cognitive Impairment</span>
+                    <span class="stage-desc">An intermediate stage between expected cognitive decline of normal aging
+                        and the more serious decline of dementia.</span>
+                </div>
+
+                <div class="stage-item ad">
+                    <span class="stage-title" style="color: var(--danger);">AD - Alzheimer's Disease</span>
+                    <span class="stage-desc">Pathological changes indicative of Alzheimer's dementia, including
+                        significant atrophy in the hippocampus and other regions.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Interaction -->
+        <div class="interaction-card">
+            <form action="/" method="post" enctype="multipart/form-data" id="uploadForm" style="position: relative;">
+
+                <!-- Loading Overlay -->
+                <div class="loader-overlay" id="loader">
+                    <div class="spinner"></div>
+                    <span style="font-weight: 600; color: var(--primary);">Analyzing Neural Structure...</span>
+                </div>
+
+                <div class="upload-area" id="drop-zone">
+                    <input type="file" name="file" accept=".nii,.nii.gz,.jpg,.jpeg,.png" id="fileInput" required
+                        style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; opacity: 0; cursor: pointer;">
+                    <span class="icon-large">☁️</span>
+                    <h3 style="margin: 0.5rem 0; font-size: 1.2rem;">Upload MRI Scan</h3>
+                    <p style="color: var(--text-muted); margin: 0;">Drag & drop or click to browse</p>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Supports: .nii, .nii.gz,
+                        .jpg, .png</p>
+                    <div id="fileName" style="margin-top: 1rem; font-weight: 600; color: var(--primary);"></div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="submitBtn">Run Analysis</button>
+            </form>
+
+            <!-- Results Section -->
+            {% if result %}
+            {% set res_class = 'res-cn' %}
+            {% if 'MCI' in result %}{% set res_class = 'res-mci' %}{% endif %}
+            {% if 'Alzheimer' in result %}{% set res_class = 'res-ad' %}{% endif %}
+
+            <div class="result-container {{ res_class }}">
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 2rem 0;">
+
+                <span class="result-badge">Analysis Complete</span>
+
+                <div class="score-circle" style="--percent: {{ confidence }};">
+                    <span class="score-value">{{ confidence }}</span>
+                </div>
+
+                <h3 style="font-size: 1.5rem; margin: 0.5rem 0;">{{ result }}</h3>
+                <span class="file-meta">Source: {{ filename }}</span>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result-container"
+                style="color: var(--danger); background: #fef2f2; padding: 1rem; border-radius: 0.5rem; border: 1px solid #fecaca;">
+                <strong>Analysis Failed:</strong><br>
+                {{ error }}
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 NeuroScan AI Project. Developed for research purposes.</p>
+    </footer>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 style="color: var(--primary); margin-top: 0;">About NeuroScan AI</h2>
+            <p><strong>NeuroScan AI</strong> is a cutting-edge demonstration of using 3D Convolutional Neural Networks
+                (CNNs) for the early detection of Alzheimer's Disease.</p>
+
+            <h3>How it Works</h3>
+            <p>The system analyzes structural MRI waveforms to identify biomarkers associated with three key stages:</p>
+            <ul>
+                <li><strong>CN (Cognitively Normal):</strong> Healthy brain structure.</li>
+                <li><strong>MCI (Mild Cognitive Impairment):</strong> Intermediate stage, often a precursor to dementia.
+                </li>
+                <li><strong>AD (Alzheimer's Disease):</strong> Advanced neurodegeneration.</li>
+            </ul>
+
+            <div style="background-color: #f1f5f9; padding: 1rem; border-radius: 0.5rem; margin-top: 1.5rem;">
+                <strong>Disclaimer:</strong> This tool is for research and educational purposes only. The current
+                version runs on a demonstration model trained with mock data and should not be used for actual medical
+                diagnosis.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileName');
+        const dropZone = document.getElementById('drop-zone');
+        const form = document.getElementById('uploadForm');
+        const loader = document.getElementById('loader');
+
+        // Modal Logic
+        const modal = document.getElementById("aboutModal");
+        const btn = document.getElementById("aboutBtn");
+        const span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Drag and drop effects
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('highlight');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('highlight');
+        }
+
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files.length > 0) {
+                fileNameDisplay.textContent = this.files[0].name;
+            }
+        });
+
+        form.addEventListener('submit', function () {
+            if (fileInput.files.length > 0) {
+                loader.style.display = 'flex';
+                document.getElementById('submitBtn').style.opacity = '0.5';
+                document.getElementById('submitBtn').style.pointerEvents = 'none';
+            }
+        });
+
+        // Clean URL to prevent re-submission/display loop on refresh
+        window.onload = function () {
+            if (window.history.replaceState) {
+                const url = new URL(window.location);
+                // Only clean if we have params
+                if (url.searchParams.toString() !== "") {
+                    url.search = "";
+                    window.history.replaceState({}, document.title, url.toString());
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
+```
