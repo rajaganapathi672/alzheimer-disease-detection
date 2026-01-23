@@ -3,13 +3,11 @@ services:
   - type: web
     name: alzheimer-detection-app
     runtime: python
-    # Specify the working directory containing app.py
-    rootDir: ./web_app
     plan: free
     # Build command - install all dependencies
-    buildCommand: pip install -r ../requirements.txt
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
     # Start command - use gunicorn for production
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --timeout 120 --workers 1 app:app
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --timeout 120 --workers 1 --chdir web_app app:app
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0

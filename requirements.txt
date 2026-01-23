@@ -1,3 +1,7 @@
+# Build Dependencies
+setuptools==69.0.3
+wheel==0.42.0
+
 # Core Web Framework
 Flask==3.0.0
 Werkzeug==3.0.1
