@@ -1,0 +1,21 @@
+services:
+  # Web Service Configuration
+  - type: web
+    name: alzheimer-detection-app
+    runtime: python
+    # Specify the working directory containing app.py
+    rootDir: ./web_app
+    plan: free
+    # Build command - install all dependencies
+    buildCommand: pip install -r ../requirements.txt
+    # Start command - use gunicorn for production
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --timeout 120 --workers 1 app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: PORT
+        value: 10000
+    # Health check endpoint
+    healthCheckPath: /
+    # Auto-deploy on git push
+    autoDeploy: true

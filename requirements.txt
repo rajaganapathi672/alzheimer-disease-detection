@@ -1,0 +1,22 @@
+# Core Web Framework
+Flask==3.0.0
+Werkzeug==3.0.1
+
+# Configuration
+PyYAML==6.0.1
+
+# Scientific Computing
+numpy==1.24.3
+
+# Medical Imaging
+nibabel==5.2.0
+
+# Deep Learning - PyTorch (CPU version for better compatibility)
+torch==2.1.0
+torchvision==0.16.0
+
+# Image Processing
+Pillow==10.1.0
+
+# WSGI Server for Production
+gunicorn==21.2.0

@@ -29,8 +29,19 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 def load_config(config_path='config_local.yaml'):
     """Load project configuration from YAML file."""
-    with open(config_path, 'r') as f:
-        return yaml.safe_load(f)
+    # Try multiple paths for flexibility in deployment
+    possible_paths = [
+        config_path,
+        os.path.join(os.path.dirname(__file__), '..', config_path),
+        os.path.join(os.getcwd(), config_path),
+    ]
+    
+    for path in possible_paths:
+        if os.path.exists(path):
+            with open(path, 'r') as f:
+                return yaml.safe_load(f)
+    
+    raise FileNotFoundError(f"Config file not found. Tried: {possible_paths}")
 
 cfg = load_config()
 device = torch.device("cpu") # Use CPU for maximum compatibility in this demo
@@ -217,5 +228,6 @@ def index():
                          error=request.args.get('error'))
 
 if __name__ == '__main__':
-    # Run server
-    app.run(debug=True, port=5000)
+    # Run server (use PORT from environment for production, default to 5000 for local)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', debug=False, port=port)
