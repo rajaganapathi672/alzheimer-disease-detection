@@ -10,6 +10,10 @@ import torch.nn.functional as F
 from flask import Flask, request, render_template, redirect, url_for
 from werkzeug.utils import secure_filename
 from PIL import Image
+from dotenv import load_dotenv
+
+# Load environment variables from .env file (for local development)
+load_dotenv()
 
 # Add parent directory to path to allow importing models from the project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))

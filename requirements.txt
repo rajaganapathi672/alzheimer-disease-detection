@@ -4,6 +4,7 @@ Werkzeug==3.0.1
 
 # Configuration
 PyYAML==6.0.1
+python-dotenv==1.0.0
 
 # Scientific Computing
 numpy==1.24.3
